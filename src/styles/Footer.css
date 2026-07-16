@@ -1,0 +1,47 @@
+.footer_body {
+    background-color: #030F5D;
+    height: 12dvh;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+}
+.uni_address {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 23%;
+    justify-content: space-between;
+}
+
+.uni_num {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 15%;
+    justify-content: space-between;
+}
+.join_info  {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 13%;
+    justify-content: space-between;
+}
+.pax_num {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 10%;
+    justify-content: space-between;
+}
+
+.team_info {
+    display: flex;
+    flex-direction: row;
+    color: #E5E8EB;
+    align-items: flex-end;
+    padding-bottom: 1%;
+    font-size: 12px;
+}

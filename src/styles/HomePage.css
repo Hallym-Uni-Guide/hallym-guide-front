@@ -27,7 +27,7 @@
     border-radius: 20px;
     margin-top: 2%;
     padding: 1%;
-    height: 20vh;
+    height: 22vh;
 }
 
 .school_life h2 {
@@ -83,13 +83,33 @@
     width: 100%;
     display: flex;
     border: 1px solid blue;
-    height: 80%;
+    height: 85%;
+    margin-top: 5%;
 }
 
-.chedule_calendar {
+.schedule_calendar {
     width: 50%;
     border: 1px solid #006BFF33;
     border-radius: 20px;
+    padding: 3%;
+    display: flex;
+    flex-direction: column;
+}
+
+.schedule_head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.schedule_head h2 {
+    margin: 0%;
+    color : #191F28;
+}
+
+.schedule_more_link {
+    color : #4E5968;
+    font-size: 16px;
 }
 
 .home_body_right {
@@ -100,17 +120,18 @@
     width: 100%;
     border: 1px solid #006BFF33;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 30%;
+    flex-direction: column;
+    box-sizing: border-box;
     margin-bottom: 10%;
+    border-radius: 20px;
+    height: 34dvh;
 }
 
 .notice_section {
     width: 100%;
     border: 1px solid #006BFF33;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 65%;
+    box-sizing: border-box;
+    border-radius: 20px;
+    height: 46dvh;
 }
