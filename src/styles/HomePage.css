@@ -16,17 +16,32 @@
     border-radius: 50px;
     height: 8vh;
     padding: 3%;
-    text-align: center;
-    border: 1px solid blue;
+    border: 4px solid #006BFF;
+}
+
+.school_life {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid #006BFF33;
+    border-radius: 20px;
+    margin-top: 2%;
+    padding: 1%;
+    height: 20vh;
+}
+
+.school_life h2 {
+    margin: 0%;
+    margin-left: 2%;
+    margin-top: 1%;
 }
 
 .school_life_menu {
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   table-layout: fixed;
   border-collapse: separate;
   border-spacing: 10px;
-  border: 1px solid tomato;
 }
 
 .school_life_menu td {
@@ -35,9 +50,13 @@
 
 .school_life_menu button {
   width: 100%;
-  height: 6vh;
+  height: 2vh;
   min-height: 50px;
   box-sizing: border-box;
+  background-color: #002496;
+  color: white;
+  border-radius: 12px;
+  border: none;
 }
 
 .body_left_bottom {
@@ -49,14 +68,28 @@
 }
 
 .campus_map_containor {
-    width: 45%;
-    border: 1px solid blueviolet;
+    width: 50%;
+    border: 1px solid #006BFF33;
+    border-radius: 20px;
     height: 40vh;
+    padding: 3%;
+}
+
+.campus_map_containor h2 {
+    margin: 0;
+}
+
+.campus_map {
+    width: 100%;
+    display: flex;
+    border: 1px solid blue;
+    height: 80%;
 }
 
 .chedule_calendar {
-    width: 55%;
-    border: 1px solid brown;
+    width: 50%;
+    border: 1px solid #006BFF33;
+    border-radius: 20px;
 }
 
 .home_body_right {
@@ -65,7 +98,7 @@
 
 .profile {
     width: 100%;
-    border: 1px solid chocolate;
+    border: 1px solid #006BFF33;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -75,7 +108,7 @@
 
 .notice_section {
     width: 100%;
-    border: 1px solid red;
+    border: 1px solid #006BFF33;
     display: flex;
     justify-content: center;
     align-items: center;
