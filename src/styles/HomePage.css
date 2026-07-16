@@ -121,10 +121,39 @@
     border: 1px solid #006BFF33;
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
     box-sizing: border-box;
     margin-bottom: 10%;
     border-radius: 20px;
     height: 34dvh;
+    padding: 8%;
+    h3 {
+        margin: 0%;
+    }
+    th {
+        text-align: start;
+    }
+}
+
+.profile_select {
+    width: 80%;
+    height: 3dvh;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+.profile_option_name {
+    width: 30%;
+}
+
+.login_or_signup_btn {
+    width: 100%;
+    background-color: #002496;
+    color: white;
+    border-radius: 12px;
+    height: 5dvh;
+    border: none;
+    margin-top: 10%;
 }
 
 .notice_section {
