@@ -1,6 +1,15 @@
 .header_body {
     width: 80%;
+    height: 56px;
     border-bottom: 2px solid #E5E8EB;
     margin-bottom: 2%;
     padding: 0% 10%;
+    display: flex;
+    align-items: center;
+}
+
+.header_body img {
+    width: 106px;
+    height: auto;
+    display: block;
 }
