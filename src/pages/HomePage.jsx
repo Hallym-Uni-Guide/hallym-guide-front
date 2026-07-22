@@ -36,8 +36,8 @@ const HomePage = () => {
               <tbody>
                 <tr>
                   <td><button>전공</button></td>
-                  <td><button>신입생 가이드</button></td>
-                  <td><button>수강신청</button></td>
+                  <td><button onClick={() => navigate("/freshman-guide")}>신입생 가이드</button></td>
+                  <td><button onClick={() => navigate("/course-registration")}>수강신청</button></td>
                 </tr>
                 <tr>
                   <td><button>휴·복학</button></td>
