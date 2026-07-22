@@ -48,7 +48,7 @@ const HomePage = () => {
             </table>
           </div>
           <div className="body_left_bottom">
-            <div className="campus_map_containor">
+            <div className="campus_map_containor" onClick={() => navigate("/campus-map")}>
               <h2>캠퍼스 맵</h2>
               <div className="campus_map">캠퍼스 맵</div>
             </div>

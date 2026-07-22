@@ -1,0 +1,430 @@
+.timetable_page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.timetable_body {
+    width: 90%;
+    box-sizing: border-box;
+    padding: 4% 0 6% 10%;
+    flex: 1;
+}
+
+/* filter bar */
+
+.timetable_filter_bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+    flex-wrap: wrap;
+    border: 1px solid #E5E8EB;
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 28px;
+}
+
+.filter_field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 13px;
+    color: #4E5968;
+}
+
+.filter_field select {
+    height: 40px;
+    border: 1px solid #D1D6DB;
+    border-radius: 8px;
+    padding: 0 10px;
+    font-size: 14px;
+    color: #191F28;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+.filter_field_search {
+    flex: 1;
+    min-width: 240px;
+}
+
+.filter_search_input_wrap {
+    position: relative;
+}
+
+.filter_search_input_wrap input {
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    border: 1px solid #D1D6DB;
+    border-radius: 8px;
+    padding: 0 40px 0 12px;
+    font-size: 14px;
+    color: #191F28;
+}
+
+.filter_search_input_wrap .icon_search {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.filter_search_btn {
+    height: 40px;
+    padding: 0 22px;
+    background-color: #002496;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.filter_reset_btn {
+    height: 40px;
+    padding: 0 22px;
+    background-color: white;
+    color: #4E5968;
+    border: 1px solid #D1D6DB;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* panel row */
+
+.timetable_grid_row {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.course_result_panel {
+    width: 340px;
+    flex-shrink: 0;
+    border: 1px solid #E5E8EB;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.timetable_preview_panel {
+    flex: 1;
+    min-width: 380px;
+    border: 1px solid #E5E8EB;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.credit_status_panel {
+    width: 220px;
+    flex-shrink: 0;
+    border: 1px solid #E5E8EB;
+    border-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.panel_title {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0 0 16px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #191F28;
+}
+
+.panel_title_count {
+    font-size: 12px;
+    font-weight: 400;
+    color: #8B95A1;
+}
+
+/* course result table */
+
+.course_result_table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.course_result_table th {
+    padding: 8px 4px;
+    border-bottom: 1px solid #191F28;
+    font-size: 12px;
+    color: #191F28;
+    text-align: center;
+}
+
+.course_result_table td {
+    padding: 10px 4px;
+    border-bottom: 1px solid #F2F4F6;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.course_name_cell {
+    text-align: left;
+    font-weight: 600;
+    color: #191F28;
+}
+
+.course_schedule_cell {
+    font-size: 11px;
+    color: #4E5968;
+    line-height: 1.4;
+}
+
+.category_badge {
+    display: inline-flex;
+    padding: 3px 6px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    border: 1px solid;
+    white-space: nowrap;
+}
+
+.category_required_major {
+    color: #7C4DFF;
+    border-color: #7C4DFF;
+    background-color: #F4F0FF;
+}
+
+.category_elective_major {
+    color: #12B76A;
+    border-color: #12B76A;
+    background-color: #EFFBF4;
+}
+
+.category_required_general {
+    color: #006BFF;
+    border-color: #006BFF;
+    background-color: #EFF6FF;
+}
+
+.category_elective_general {
+    color: #8B95A1;
+    border-color: #D1D6DB;
+    background-color: #F7F8FA;
+}
+
+.add_course_btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid #006BFF;
+    background-color: white;
+    color: #006BFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+}
+
+.add_course_btn_active {
+    background-color: #006BFF;
+    color: white;
+}
+
+.course_pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+}
+
+.course_page_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 26px;
+    height: 26px;
+    border: none;
+    background: none;
+    color: #8B95A1;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.course_page_btn_active {
+    color: #002496;
+    font-weight: 700;
+}
+
+.course_page_btn:disabled {
+    color: #D1D6DB;
+    cursor: default;
+}
+
+/* timetable grid */
+
+.timetable_grid_table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.timetable_grid_table th {
+    padding: 8px 0;
+    font-size: 13px;
+    color: #4E5968;
+    border-bottom: 1px solid #D8E4FB;
+}
+
+.timetable_period_label {
+    color: #8B95A1;
+    font-size: 12px;
+    font-weight: 400;
+    width: 24px;
+}
+
+.timetable_grid_table td {
+    border: 1px solid #E8EEFB;
+    height: 34px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.timetable_cell_filled {
+    background-color: #DCE8FE;
+}
+
+.timetable_cell_name {
+    font-size: 12px;
+    font-weight: 700;
+    color: #002496;
+}
+
+.timetable_cell_room {
+    font-size: 10px;
+    color: #4E5968;
+}
+
+/* credit status */
+
+.credit_status_group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 0;
+    border-bottom: 1px solid #F2F4F6;
+}
+
+.credit_status_group:last-of-type {
+    border-bottom: none;
+}
+
+.credit_status_label {
+    font-size: 12px;
+    color: #8B95A1;
+}
+
+.credit_status_value {
+    font-size: 18px;
+    font-weight: 800;
+    color: #191F28;
+}
+
+.credit_status_note {
+    font-size: 12px;
+    color: #8B95A1;
+}
+
+.credit_status_actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.timetable_reset_btn {
+    height: 40px;
+    border: 1px solid #D1D6DB;
+    background-color: white;
+    color: #4E5968;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.timetable_save_btn {
+    height: 40px;
+    border: none;
+    background-color: #006BFF;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* icons */
+
+.icon {
+    display: inline-block;
+    flex-shrink: 0;
+    background-color: currentColor;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+}
+
+.icon_search {
+    width: 16px;
+    height: 16px;
+    color: #8B95A1;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+}
+
+.icon_plus {
+    width: 12px;
+    height: 12px;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='5' x2='12' y2='19'/%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='12' y1='5' x2='12' y2='19'/%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3C/svg%3E");
+}
+
+.icon_check {
+    width: 12px;
+    height: 12px;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+}
+
+.icon_chevron_left {
+    width: 12px;
+    height: 12px;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 18 9 12 15 6'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='15 18 9 12 15 6'/%3E%3C/svg%3E");
+}
+
+.icon_chevron_right {
+    width: 12px;
+    height: 12px;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E");
+}
+
+@media (max-width: 1000px) {
+    .timetable_grid_row {
+        flex-direction: column;
+    }
+
+    .course_result_panel,
+    .timetable_preview_panel,
+    .credit_status_panel {
+        width: 100%;
+    }
+}

@@ -1,0 +1,206 @@
+.campus_page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.campus_body {
+    display: flex;
+    border-top: 1px solid #E5E8EB;
+}
+
+/* sidebar */
+
+.campus_sidebar {
+    width: 300px;
+    flex-shrink: 0;
+    border-right: 1px solid #E5E8EB;
+    overflow-y: auto;
+    padding: 24px 20px;
+    box-sizing: border-box;
+}
+
+.campus_sidebar_title {
+    margin: 0 0 16px;
+    font-size: 18px;
+    font-weight: 800;
+    color: #191F28;
+}
+
+.building_search {
+    margin-bottom: 14px;
+}
+
+.building_search input {
+    width: 100%;
+    height: 38px;
+    box-sizing: border-box;
+    border: 1px solid #D1D6DB;
+    border-radius: 8px;
+    padding: 0 12px;
+    font-size: 13px;
+    color: #191F28;
+}
+
+.building_search input::placeholder {
+    color: #B0B8C1;
+}
+
+.building_empty {
+    padding: 12px 10px;
+    font-size: 13px;
+    color: #B0B8C1;
+}
+
+.building_list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.building_item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 12px 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #4E5968;
+    text-align: left;
+}
+
+.building_item:hover {
+    background-color: #F2F6FF;
+}
+
+.building_item:disabled {
+    color: #D1D6DB;
+    cursor: default;
+}
+
+.building_item:disabled:hover {
+    background-color: transparent;
+}
+
+.building_item_active {
+    background-color: #EFF6FF;
+    color: #006BFF;
+    font-weight: 700;
+}
+
+/* map */
+
+.campus_map_container {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    aspect-ratio: 16 / 9;
+    max-height: 640px;
+    min-height: 420px;
+}
+
+.kakao_map_canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.campus_map_error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #8B95A1;
+    font-size: 14px;
+    padding: 0 24px;
+    text-align: center;
+}
+
+/* icons */
+
+.icon {
+    display: inline-block;
+    flex-shrink: 0;
+    background-color: currentColor;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+}
+
+.icon_pin {
+    width: 15px;
+    height: 15px;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z'/%3E%3Ccircle cx='12' cy='10' r='3'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z'/%3E%3Ccircle cx='12' cy='10' r='3'/%3E%3C/svg%3E");
+}
+
+/* current location marker */
+
+.current_location_marker {
+    position: relative;
+    width: 18px;
+    height: 18px;
+}
+
+.current_location_dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: #006BFF;
+    border: 2px solid white;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    transform: translate(-50%, -50%);
+}
+
+.current_location_pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: rgba(0, 107, 255, 0.35);
+    transform: translate(-50%, -50%);
+    animation: current_location_pulse 1.8s ease-out infinite;
+}
+
+@keyframes current_location_pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.7;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(3.2);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 720px) {
+    .campus_body {
+        flex-direction: column;
+    }
+
+    .campus_sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #E5E8EB;
+        max-height: 260px;
+    }
+
+    .campus_map_container {
+        aspect-ratio: 4 / 3;
+        max-height: none;
+    }
+}
