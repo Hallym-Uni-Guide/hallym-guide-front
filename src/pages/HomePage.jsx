@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import NoticeCard from "../components/NoticeCard";
 import Footer from "../components/Footer";
@@ -6,12 +8,28 @@ import AiChat from "../components/AiChat";
 import "../styles/HomePage.css";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const [keyword, setKeyword] = useState("");
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    navigate(keyword ? `/search?q=${encodeURIComponent(keyword)}` : "/search");
+  };
+
   return (
     <div>
       <Header />
       <div className="home_body">
         <div className="home_body_left">
-          <input className="search_var " type="search" placeholder="검색어 입력" />
+          <form onSubmit={handleSearchSubmit}>
+            <input
+              className="search_var "
+              type="search"
+              placeholder="검색어 입력"
+              value={keyword}
+              onChange={(event) => setKeyword(event.target.value)}
+            />
+          </form>
           <div className="school_life">
             <h2>학교 생활</h2>
             <table className="school_life_menu">
