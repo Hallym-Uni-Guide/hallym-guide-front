@@ -55,7 +55,7 @@ const HomePage = () => {
             <div className="schedule_calendar">
               <div className="schedule_head">
                 <h2>2026학년도 학사일정</h2>
-                <div className="schedule_more_link">자세히 보기</div>
+                <div className="schedule_more_link" onClick={() => navigate("/academic-calendar")}>자세히 보기</div>
               </div>
             </div>
           </div>

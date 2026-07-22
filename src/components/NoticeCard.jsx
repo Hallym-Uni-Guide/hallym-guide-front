@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function NoticeCard() {
   const [notices, setNotices] = useState([]);
@@ -30,13 +31,7 @@ export default function NoticeCard() {
       <div className="notice-head">
         <h2>공지사항</h2>
 
-        <a
-          href="https://www.hallym.ac.kr/hallym/1134/subview.do"
-          target="_blank"
-          rel="noreferrer"
-        >
-          더보기
-        </a>
+        <Link to="/notice">더보기</Link>
       </div>
 
       {isLoading ? (
