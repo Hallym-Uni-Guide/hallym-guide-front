@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   addDays,
   endOfMonth,
@@ -11,13 +11,32 @@ import {
   startOfMonth,
   startOfWeek,
 } from "date-fns";
-import { ACADEMIC_EVENTS } from "../data/academicEvents";
 import "../styles/MiniCalendar.css";
 
 const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
 const MiniCalendar = () => {
   const today = useMemo(() => new Date(), []);
+  const [academicEvents, setAcademicEvents] = useState([]);
+
+  useEffect(() => {
+    async function loadAcademicEvents() {
+      try {
+        const year = today.getFullYear();
+        const month = today.getMonth() + 1;
+        const response = await fetch(`/api/academic-calendar?year=${year}&month=${month}`);
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          setAcademicEvents(result.events);
+        }
+      } catch {
+        setAcademicEvents([]);
+      }
+    }
+
+    loadAcademicEvents();
+  }, [today]);
 
   const weeks = useMemo(() => {
     const monthStart = startOfMonth(today);
@@ -40,7 +59,7 @@ const MiniCalendar = () => {
   }, [today]);
 
   const hasEvent = (day) =>
-    ACADEMIC_EVENTS.some((event) =>
+    academicEvents.some((event) =>
       isWithinInterval(day, { start: parseISO(event.start), end: parseISO(event.end) })
     );
 

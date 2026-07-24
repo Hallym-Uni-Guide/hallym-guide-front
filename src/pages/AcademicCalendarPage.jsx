@@ -15,13 +15,10 @@ import {
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import AiChat from "../components/AiChat";
-import { ACADEMIC_EVENTS } from "../data/academicEvents";
 import "../styles/AcademicCalendarPage.css";
 
 const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
 const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
-
-const EVENTS = ACADEMIC_EVENTS;
 
 const formatRangeLabel = (dateStr) => {
   const date = parseISO(dateStr);
@@ -34,6 +31,10 @@ const AcademicCalendarPage = () => {
   const [viewYear, setViewYear] = useState(2026);
   const [viewMonth, setViewMonth] = useState(7);
 
+  const [academicEvents, setAcademicEvents] = useState([]);
+  const [isAcademicLoading, setIsAcademicLoading] = useState(true);
+  const [academicError, setAcademicError] = useState("");
+
   const [personalSchedules, setPersonalSchedules] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -41,6 +42,33 @@ const AcademicCalendarPage = () => {
   const [formError, setFormError] = useState("");
 
   const monthDate = useMemo(() => new Date(viewYear, viewMonth - 1, 1), [viewYear, viewMonth]);
+
+  useEffect(() => {
+    async function loadAcademicEvents() {
+      setIsAcademicLoading(true);
+      setAcademicError("");
+
+      try {
+        const response = await fetch(
+          `/api/academic-calendar?year=${viewYear}&month=${viewMonth}`
+        );
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || "학사일정을 불러오지 못했습니다.");
+        }
+
+        setAcademicEvents(result.events);
+      } catch (err) {
+        setAcademicError(err.message);
+        setAcademicEvents([]);
+      } finally {
+        setIsAcademicLoading(false);
+      }
+    }
+
+    loadAcademicEvents();
+  }, [viewYear, viewMonth]);
 
   useEffect(() => {
     async function loadSchedules() {
@@ -141,18 +169,8 @@ const AcademicCalendarPage = () => {
     return result;
   }, [monthDate]);
 
-  const monthEvents = useMemo(
-    () =>
-      EVENTS.filter((event) => {
-        const start = parseISO(event.start);
-        const end = parseISO(event.end);
-        return start <= endOfMonth(monthDate) && end >= startOfMonth(monthDate);
-      }),
-    [monthDate]
-  );
-
   const hasEvent = (day) =>
-    monthEvents.some((event) =>
+    academicEvents.some((event) =>
       isWithinInterval(day, { start: parseISO(event.start), end: parseISO(event.end) })
     );
 
@@ -257,11 +275,18 @@ const AcademicCalendarPage = () => {
           </div>
 
           <div className="calendar_schedule_card">
-            {monthEvents.length === 0 ? (
+            {isAcademicLoading && (
+              <div className="calendar_schedule_empty">불러오는 중입니다...</div>
+            )}
+            {!isAcademicLoading && academicError && (
+              <div className="calendar_schedule_empty">{academicError}</div>
+            )}
+            {!isAcademicLoading && !academicError && academicEvents.length === 0 && (
               <div className="calendar_schedule_empty">등록된 학사일정이 없습니다.</div>
-            ) : (
+            )}
+            {!isAcademicLoading && !academicError && academicEvents.length > 0 && (
               <ul className="calendar_schedule_list">
-                {monthEvents.map((event) => (
+                {academicEvents.map((event) => (
                   <li
                     key={event.label}
                     className={`calendar_schedule_row ${event.isHoliday ? "calendar_schedule_row_holiday" : ""}`}
