@@ -181,11 +181,22 @@
     font-weight: 700;
 }
 
+.calendar_day_dot_row {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 4px;
+}
+
 .calendar_day_dot {
     width: 4px;
     height: 4px;
     border-radius: 50%;
     background-color: #006BFF;
+}
+
+.calendar_day_dot_personal {
+    background-color: #FF8A00;
 }
 
 /* schedule card */
@@ -244,6 +255,87 @@
     font-size: 11px;
     color: #B0B8C1;
     margin: 8px 0 4px;
+}
+
+/* personal schedule card */
+
+.calendar_personal_card {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #E5E8EB;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-top: 24px;
+}
+
+.calendar_personal_title {
+    margin: 0 0 16px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #191F28;
+}
+
+.calendar_personal_form {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.calendar_personal_form input {
+    height: 40px;
+    box-sizing: border-box;
+    border: 1px solid #D1D6DB;
+    border-radius: 8px;
+    padding: 0 12px;
+    font-size: 14px;
+    color: #191F28;
+}
+
+.calendar_personal_form input[type="text"] {
+    flex: 1;
+    min-width: 160px;
+}
+
+.calendar_personal_form button {
+    height: 40px;
+    padding: 0 20px;
+    background-color: #030F5D;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.calendar_personal_error {
+    margin: -4px 0 12px;
+    color: #E03131;
+    font-size: 13px;
+}
+
+.calendar_personal_delete_btn {
+    margin-left: auto;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid #E03131;
+    background-color: white;
+    color: #E03131;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.icon_close {
+    width: 10px;
+    height: 10px;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'/%3E%3Cline x1='6' y1='6' x2='18' y2='18'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='18' y1='6' x2='6' y2='18'/%3E%3Cline x1='6' y1='6' x2='18' y2='18'/%3E%3C/svg%3E");
 }
 
 /* icons */

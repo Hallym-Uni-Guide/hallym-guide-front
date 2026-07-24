@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   addDays,
   endOfMonth,
@@ -28,11 +28,98 @@ const formatRangeLabel = (dateStr) => {
   return `${format(date, "yyyy.MM.dd")}(${WEEKDAYS[date.getDay()]})`;
 };
 
+const EMPTY_PERSONAL_FORM = { title: "", date: "", description: "" };
+
 const AcademicCalendarPage = () => {
   const [viewYear, setViewYear] = useState(2026);
   const [viewMonth, setViewMonth] = useState(7);
 
+  const [personalSchedules, setPersonalSchedules] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [form, setForm] = useState(EMPTY_PERSONAL_FORM);
+  const [formError, setFormError] = useState("");
+
   const monthDate = useMemo(() => new Date(viewYear, viewMonth - 1, 1), [viewYear, viewMonth]);
+
+  useEffect(() => {
+    async function loadSchedules() {
+      setIsLoading(true);
+      setError("");
+
+      try {
+        const response = await fetch(`/api/schedules?year=${viewYear}&month=${viewMonth}`);
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || "내 일정을 불러오지 못했습니다.");
+        }
+
+        setPersonalSchedules(result.schedules);
+      } catch (err) {
+        setError(err.message);
+        setPersonalSchedules([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadSchedules();
+  }, [viewYear, viewMonth]);
+
+  const updateField = (field) => (event) => {
+    setForm((prev) => ({ ...prev, [field]: event.target.value }));
+  };
+
+  const handleAddSchedule = async (event) => {
+    event.preventDefault();
+    setFormError("");
+
+    if (!form.title.trim() || !form.date) {
+      setFormError("일정 제목과 날짜를 입력해주세요.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/schedules", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "일정 추가에 실패했습니다.");
+      }
+
+      const scheduleYear = Number(result.schedule.date.slice(0, 4));
+      const scheduleMonth = Number(result.schedule.date.slice(5, 7));
+
+      if (scheduleYear === viewYear && scheduleMonth === viewMonth) {
+        setPersonalSchedules((prev) => [...prev, result.schedule]);
+      }
+
+      setForm(EMPTY_PERSONAL_FORM);
+    } catch (err) {
+      setFormError(err.message);
+    }
+  };
+
+  const handleDeleteSchedule = async (id) => {
+    try {
+      const response = await fetch(`/api/schedules/${id}`, { method: "DELETE" });
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "일정 삭제에 실패했습니다.");
+      }
+
+      setPersonalSchedules((prev) => prev.filter((schedule) => schedule.id !== id));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   const weeks = useMemo(() => {
     const monthStart = startOfMonth(monthDate);
@@ -68,6 +155,9 @@ const AcademicCalendarPage = () => {
     monthEvents.some((event) =>
       isWithinInterval(day, { start: parseISO(event.start), end: parseISO(event.end) })
     );
+
+  const hasPersonalSchedule = (day) =>
+    personalSchedules.some((schedule) => isSameDay(day, parseISO(schedule.date)));
 
   return (
     <div className="calendar_page">
@@ -147,7 +237,14 @@ const AcademicCalendarPage = () => {
                               >
                                 {format(day, "d")}
                               </span>
-                              {hasEvent(day) && <div className="calendar_day_dot" aria-hidden="true" />}
+                              <div className="calendar_day_dot_row">
+                                {hasEvent(day) && (
+                                  <div className="calendar_day_dot" aria-hidden="true" />
+                                )}
+                                {hasPersonalSchedule(day) && (
+                                  <div className="calendar_day_dot calendar_day_dot_personal" aria-hidden="true" />
+                                )}
+                              </div>
                             </div>
                           )}
                         </td>
@@ -181,6 +278,59 @@ const AcademicCalendarPage = () => {
             )}
             <p className="calendar_disclaimer">학사일정은 학교 사정에 의해 변동될 수 있습니다.</p>
           </div>
+        </div>
+
+        <div className="calendar_personal_card">
+          <h2 className="calendar_personal_title">내 일정</h2>
+
+          <form className="calendar_personal_form" onSubmit={handleAddSchedule}>
+            <input
+              type="text"
+              placeholder="일정 제목"
+              value={form.title}
+              onChange={updateField("title")}
+            />
+            <input type="date" value={form.date} onChange={updateField("date")} />
+            <input
+              type="text"
+              placeholder="메모 (선택)"
+              value={form.description}
+              onChange={updateField("description")}
+            />
+            <button type="submit">일정 추가</button>
+          </form>
+
+          {formError && <p className="calendar_personal_error">{formError}</p>}
+
+          {isLoading && <p className="calendar_schedule_empty">불러오는 중입니다...</p>}
+          {!isLoading && error && <p className="calendar_schedule_empty">{error}</p>}
+          {!isLoading && !error && personalSchedules.length === 0 && (
+            <p className="calendar_schedule_empty">
+              {viewYear}년 {viewMonth}월에 등록된 내 일정이 없습니다.
+            </p>
+          )}
+
+          {!isLoading && !error && personalSchedules.length > 0 && (
+            <ul className="calendar_schedule_list">
+              {personalSchedules.map((schedule) => (
+                <li className="calendar_schedule_row" key={schedule.id}>
+                  <span className="calendar_schedule_date">{schedule.date}</span>
+                  <span className="calendar_schedule_label">
+                    {schedule.title}
+                    {schedule.description && ` — ${schedule.description}`}
+                  </span>
+                  <button
+                    className="calendar_personal_delete_btn"
+                    type="button"
+                    onClick={() => handleDeleteSchedule(schedule.id)}
+                    aria-label="일정 삭제"
+                  >
+                    <span className="icon icon_close" aria-hidden="true" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
       <AiChat />

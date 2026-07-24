@@ -1,41 +1,67 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import AiChat from "../components/AiChat";
 import "../styles/NoticePage.css";
 
-const FILTER_TABS = ["전체보기", "일반", "행사", "국제", "취업/창업"];
-
-const NOTICES = [
-  { id: 4584, category: "일반", title: "한림대학교 창업보육센터 신규 입주기업 모집 공고", date: "2026-07-15" },
-  { id: 4583, category: "일반", title: "[제38회 춘천인형극제] 자원봉사자 '코코미' 모집 홍보", date: "2026-07-15" },
-  { id: 4582, category: "일반", title: "[한림봉사센터] 2026-1학기 한림BeCome 마일리지 신청 안내", date: "2026-07-15" },
-  { id: 4581, category: "취업/창업", title: "2026 제약·바이오 취업 역량강화 「K-바이오 리더양성」 참여자 모집 안내", date: "2026-07-14" },
-  { id: 4580, category: "일반", title: "2026-2학기 학생생활관 재학생 추가 입사신청 안내", date: "2026-07-14" },
-  { id: 4579, category: "일반", title: "[교육혁신센터] 「2026학년도 1학기 교수역량 진단 설문조사」 시행 안내(~8/31까지)", date: "2026-07-13" },
-  { id: 4578, category: "일반", title: "[교육혁신센터] 「2026학년도 대학 교수자의 AI 교수역량 측정 도구 설문조사」 시행 안", date: "2026-07-13" },
-  { id: 4577, category: "일반", title: "[인사혁신처] 국가인재데이터베이스 인물정보 업데이트 안내", date: "2026-07-09" },
-  { id: 4576, category: "취업/창업", title: "[춘천시공연예술창업지원센터] 2026 공연 콘텐츠 발굴 선공개 '합케이스&apos'", date: "2026-07-08" },
-  { id: 4575, category: "일반", title: "대학생 및 외국인 유학생 대상 PM·이륜차 사고 예방 안내", date: "2026-07-08" },
+const FILTER_TABS = [
+  { key: "전체보기", category: "general", subCategory: "all" },
+  { key: "일반", category: "general", subCategory: "normal" },
+  { key: "행사", category: "event", subCategory: null },
+  { key: "국제", category: "general", subCategory: "international" },
+  { key: "취업/창업", category: "general", subCategory: "employment" },
 ];
 
-const TOTAL_COUNT = 4584;
-const TOTAL_PAGES = 10;
+const NOTICE_LIMIT = 20;
 
 const NoticePage = () => {
   const [keyword, setKeyword] = useState("");
-  const [activeTab, setActiveTab] = useState("전체보기");
-  const [page, setPage] = useState(1);
+  const [activeTab, setActiveTab] = useState(FILTER_TABS[0].key);
+  const [notices, setNotices] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const pages = useMemo(
-    () => Array.from({ length: TOTAL_PAGES }, (_, i) => i + 1),
-    []
-  );
+  const tab = FILTER_TABS.find((item) => item.key === activeTab);
 
-  const visibleNotices =
-    activeTab === "전체보기"
-      ? NOTICES
-      : NOTICES.filter((notice) => notice.category === activeTab);
+  useEffect(() => {
+    async function loadNotices() {
+      setIsLoading(true);
+      setError("");
+
+      try {
+        const params = new URLSearchParams({
+          category: tab.category,
+          limit: String(NOTICE_LIMIT),
+        });
+
+        if (tab.subCategory) {
+          params.set("subCategory", tab.subCategory);
+        }
+
+        const response = await fetch(`/api/notices?${params.toString()}`);
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || "공지사항을 불러오지 못했습니다.");
+        }
+
+        setNotices(result.data);
+      } catch (err) {
+        setError(err.message);
+        setNotices([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadNotices();
+  }, [tab.category, tab.subCategory]);
+
+  const visibleNotices = keyword.trim()
+    ? notices.filter((notice) =>
+        notice.title.toLowerCase().includes(keyword.trim().toLowerCase())
+      )
+    : notices;
 
   return (
     <div className="notice_page">
@@ -54,12 +80,12 @@ const NoticePage = () => {
 
         <main className="notice_main">
           <div className="notice_head_row">
-            <h1 className="notice_title">일반공지</h1>
+            <h1 className="notice_title">공지사항</h1>
             <form className="notice_search_bar" onSubmit={(event) => event.preventDefault()}>
               <input
                 className="notice_search_input"
                 type="search"
-                placeholder="검색어 입력"
+                placeholder="불러온 목록 내 검색"
                 value={keyword}
                 onChange={(event) => setKeyword(event.target.value)}
               />
@@ -70,107 +96,64 @@ const NoticePage = () => {
           </div>
 
           <div className="notice_filter_tabs">
-            {FILTER_TABS.map((tab) => (
+            {FILTER_TABS.map((item) => (
               <button
-                key={tab}
-                className={`notice_filter_tab ${activeTab === tab ? "notice_filter_tab_active" : ""}`}
+                key={item.key}
+                className={`notice_filter_tab ${activeTab === item.key ? "notice_filter_tab_active" : ""}`}
                 type="button"
-                onClick={() => {
-                  setActiveTab(tab);
-                  setPage(1);
-                }}
+                onClick={() => setActiveTab(item.key)}
               >
-                {tab}
+                {item.key}
               </button>
             ))}
           </div>
 
           <div className="notice_meta_row">
-            <span>총 게시물 : {TOTAL_COUNT}개</span>
-            <span>페이지 : {page}/{TOTAL_PAGES}</span>
+            <span>불러온 게시물 : {visibleNotices.length}개</span>
           </div>
 
-          <table className="notice_table">
-            <colgroup>
-              <col style={{ width: "10%" }} />
-              <col />
-              <col style={{ width: "16%" }} />
-            </colgroup>
-            <thead>
-              <tr>
-                <th>번호</th>
-                <th className="notice_table_title_head">제목</th>
-                <th>작성일</th>
-              </tr>
-            </thead>
-            <tbody>
-              {visibleNotices.map((notice) => (
-                <tr key={notice.id}>
-                  <td className="notice_table_id">{notice.id}</td>
-                  <td className="notice_table_title">
-                    <span
-                      className={`category_badge ${
-                        notice.category === "취업/창업" ? "category_badge_job" : "category_badge_general"
-                      }`}
-                    >
-                      {notice.category}
-                    </span>
-                    {notice.title}
-                  </td>
-                  <td className="notice_table_date">{notice.date}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {isLoading && <p className="notice_empty_message">불러오는 중입니다...</p>}
+          {!isLoading && error && <p className="notice_empty_message">{error}</p>}
+          {!isLoading && !error && visibleNotices.length === 0 && (
+            <p className="notice_empty_message">공지사항이 없습니다.</p>
+          )}
 
-          <nav className="pagination" aria-label="페이지네이션">
-            <button
-              className="page_btn page_btn_edge"
-              type="button"
-              disabled={page === 1}
-              onClick={() => setPage(1)}
-              aria-label="첫 페이지"
-            >
-              <span className="icon icon_chevrons_left" aria-hidden="true" />
-            </button>
-            <button
-              className="page_btn page_btn_edge"
-              type="button"
-              disabled={page === 1}
-              onClick={() => setPage((prev) => Math.max(1, prev - 1))}
-              aria-label="이전 페이지"
-            >
-              <span className="icon icon_chevron_left" aria-hidden="true" />
-            </button>
-            {pages.map((pageNum) => (
-              <button
-                key={pageNum}
-                className={`page_btn ${page === pageNum ? "page_btn_active" : ""}`}
-                type="button"
-                onClick={() => setPage(pageNum)}
-              >
-                {pageNum}
-              </button>
-            ))}
-            <button
-              className="page_btn page_btn_edge"
-              type="button"
-              disabled={page === TOTAL_PAGES}
-              onClick={() => setPage((prev) => Math.min(TOTAL_PAGES, prev + 1))}
-              aria-label="다음 페이지"
-            >
-              <span className="icon icon_chevron_right" aria-hidden="true" />
-            </button>
-            <button
-              className="page_btn page_btn_edge"
-              type="button"
-              disabled={page === TOTAL_PAGES}
-              onClick={() => setPage(TOTAL_PAGES)}
-              aria-label="마지막 페이지"
-            >
-              <span className="icon icon_chevrons_right" aria-hidden="true" />
-            </button>
-          </nav>
+          {!isLoading && !error && visibleNotices.length > 0 && (
+            <table className="notice_table">
+              <colgroup>
+                <col style={{ width: "10%" }} />
+                <col />
+                <col style={{ width: "16%" }} />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>번호</th>
+                  <th className="notice_table_title_head">제목</th>
+                  <th>작성일</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visibleNotices.map((notice) => (
+                  <tr key={notice.url + notice.id}>
+                    <td className="notice_table_id">{notice.id}</td>
+                    <td className="notice_table_title">
+                      <span
+                        className={`category_badge ${
+                          activeTab === "취업/창업" ? "category_badge_job" : "category_badge_general"
+                        }`}
+                      >
+                        {notice.subCategoryName || notice.categoryName}
+                      </span>
+                      <a href={notice.url} target="_blank" rel="noreferrer">
+                        {notice.title}
+                      </a>
+                    </td>
+                    <td className="notice_table_date">{notice.date}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </main>
       </div>
       <AiChat />
