@@ -2,9 +2,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import AiChat from "../components/AiChat";
+import { loadKakaoMaps } from "../utils/kakaoMapLoader";
 import "../styles/CampusMapPage.css";
 
-const KAKAO_MAP_KEY = import.meta.env.VITE_KAKAO_MAP_KEY;
 const CENTER = { lat: 37.887276057685504, lng: 127.73810348572077 };
 
 const BUILDINGS = [
@@ -61,7 +61,7 @@ const CampusMapPage = () => {
   const infoWindowRef = useRef(null);
   const currentLocationOverlayRef = useRef(null);
   const [selectedId, setSelectedId] = useState(null);
-  const [loadError, setLoadError] = useState(!KAKAO_MAP_KEY);
+  const [loadError, setLoadError] = useState(false);
   const [keyword, setKeyword] = useState("");
 
   const filteredBuildings = useMemo(() => {
@@ -85,32 +85,31 @@ const CampusMapPage = () => {
   }, []);
 
   useEffect(() => {
-    if (!KAKAO_MAP_KEY) return;
+    let cancelled = false;
 
-    const initMap = () => {
-      window.kakao.maps.load(() => {
-        const map = new window.kakao.maps.Map(mapContainerRef.current, {
-          center: new window.kakao.maps.LatLng(CENTER.lat, CENTER.lng),
+    loadKakaoMaps()
+      .then((kakao) => {
+        if (cancelled) return;
+
+        const map = new kakao.maps.Map(mapContainerRef.current, {
+          center: new kakao.maps.LatLng(CENTER.lat, CENTER.lng),
           level: 4,
         });
-        map.addControl(
-          new window.kakao.maps.ZoomControl(),
-          window.kakao.maps.ControlPosition.RIGHT
-        );
+        map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
         mapRef.current = map;
-        infoWindowRef.current = new window.kakao.maps.InfoWindow({ zIndex: 1 });
+        infoWindowRef.current = new kakao.maps.InfoWindow({ zIndex: 1 });
 
         BUILDINGS.forEach((building) => {
-          const position = new window.kakao.maps.LatLng(building.lat, building.lng);
-          const marker = new window.kakao.maps.Marker({ position, map, title: building.name });
-          window.kakao.maps.event.addListener(marker, "click", () => focusBuilding(building));
+          const position = new kakao.maps.LatLng(building.lat, building.lng);
+          const marker = new kakao.maps.Marker({ position, map, title: building.name });
+          kakao.maps.event.addListener(marker, "click", () => focusBuilding(building));
           markersRef.current[building.id] = marker;
         });
 
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             (pos) => {
-              const currentPosition = new window.kakao.maps.LatLng(
+              const currentPosition = new kakao.maps.LatLng(
                 pos.coords.latitude,
                 pos.coords.longitude
               );
@@ -122,7 +121,7 @@ const CampusMapPage = () => {
               content.innerHTML =
                 '<span class="current_location_pulse"></span><span class="current_location_dot"></span>';
 
-              currentLocationOverlayRef.current = new window.kakao.maps.CustomOverlay({
+              currentLocationOverlayRef.current = new kakao.maps.CustomOverlay({
                 position: currentPosition,
                 content,
                 xAnchor: 0.5,
@@ -135,20 +134,14 @@ const CampusMapPage = () => {
             { enableHighAccuracy: true, timeout: 8000 }
           );
         }
+      })
+      .catch(() => {
+        if (!cancelled) setLoadError(true);
       });
+
+    return () => {
+      cancelled = true;
     };
-
-    if (window.kakao && window.kakao.maps) {
-      initMap();
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_KEY}&autoload=false`;
-    script.async = true;
-    script.onload = initMap;
-    script.onerror = () => setLoadError(true);
-    document.head.appendChild(script);
   }, [focusBuilding]);
 
   return (

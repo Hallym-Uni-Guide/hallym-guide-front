@@ -4,6 +4,8 @@ import Header from "../components/Header";
 import NoticeCard from "../components/NoticeCard";
 import Footer from "../components/Footer";
 import MajorSelect from "../components/MajorSelect";
+import MiniCalendar from "../components/MiniCalendar";
+import MiniCampusMap from "../components/MiniCampusMap";
 import AiChat from "../components/AiChat";
 import "../styles/HomePage.css";
 
@@ -50,13 +52,16 @@ const HomePage = () => {
           <div className="body_left_bottom">
             <div className="campus_map_containor" onClick={() => navigate("/campus-map")}>
               <h2>캠퍼스 맵</h2>
-              <div className="campus_map">캠퍼스 맵</div>
+              <div className="campus_map">
+                <MiniCampusMap />
+              </div>
             </div>
             <div className="schedule_calendar">
               <div className="schedule_head">
                 <h2>2026학년도 학사일정</h2>
                 <div className="schedule_more_link" onClick={() => navigate("/academic-calendar")}>자세히 보기</div>
               </div>
+              <MiniCalendar />
             </div>
           </div>
         </div>

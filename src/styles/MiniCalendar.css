@@ -1,0 +1,93 @@
+.mini_calendar {
+    width: 100%;
+    border: 1px solid #E5E8EB;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 12px;
+}
+
+.mini_calendar_head {
+    background-color: #030F5D;
+    color: white;
+    text-align: center;
+    padding: 14px;
+}
+
+.mini_calendar_head_month {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.mini_calendar_head_year {
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #C3CCF2;
+    margin-top: 2px;
+}
+
+.mini_calendar_table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.mini_calendar_table th {
+    padding: 8px 0 2px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #4E5968;
+}
+
+.mini_weekday_sun {
+    color: #F04452;
+}
+
+.mini_weekday_sat {
+    color: #006BFF;
+}
+
+.mini_calendar_table td {
+    text-align: center;
+    padding: 1px 0;
+    height: 30px;
+    vertical-align: top;
+}
+
+.mini_day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+}
+
+.mini_day span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 12px;
+    color: #191F28;
+}
+
+.mini_day_sun {
+    color: #F04452 !important;
+}
+
+.mini_day_sat {
+    color: #006BFF !important;
+}
+
+.mini_day_today span {
+    background-color: #E8EEFB;
+    color: #030F5D !important;
+    font-weight: 700;
+}
+
+.mini_day_dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: #006BFF;
+}

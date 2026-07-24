@@ -15,17 +15,13 @@ import {
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import AiChat from "../components/AiChat";
+import { ACADEMIC_EVENTS } from "../data/academicEvents";
 import "../styles/AcademicCalendarPage.css";
 
 const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
 const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
 
-const EVENTS = [
-  { start: "2026-06-30", end: "2026-07-01", label: "성적이의 신청" },
-  { start: "2026-06-23", end: "2026-07-13", label: "하계 계절수업" },
-  { start: "2026-07-17", end: "2026-07-17", label: "제헌절", isHoliday: true },
-  { start: "2026-07-21", end: "2026-07-23", label: "2학기 수강신청 사전수요조사" },
-];
+const EVENTS = ACADEMIC_EVENTS;
 
 const formatRangeLabel = (dateStr) => {
   const date = parseISO(dateStr);
@@ -151,7 +147,7 @@ const AcademicCalendarPage = () => {
                               >
                                 {format(day, "d")}
                               </span>
-                              {hasEvent(day) && <span className="calendar_day_dot" aria-hidden="true" />}
+                              {hasEvent(day) && <div className="calendar_day_dot" aria-hidden="true" />}
                             </div>
                           )}
                         </td>

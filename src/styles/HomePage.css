@@ -82,7 +82,8 @@
 .campus_map {
     width: 100%;
     display: flex;
-    border: 1px solid blue;
+    border-radius: 12px;
+    overflow: hidden;
     height: 85%;
     margin-top: 5%;
 }
